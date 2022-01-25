@@ -16,7 +16,10 @@ ds <- read_csv("data_raw/rolling_stone_500.csv")
 #Use typeof to check that your conversion succeeded
 
 #ANSWER
-
+glimpse(ds)
+ds$Year <-  as.integer(ds$Year)
+typeof(ds$Year)
+glimpse(ds)
 
 ### Question 2 ---------- 
 
@@ -24,7 +27,8 @@ ds <- read_csv("data_raw/rolling_stone_500.csv")
 # change ds so that all of the variables are lowercase
 
 #ANSWER
-
+ds <- rename(ds, rank = Rank, song = Song, artist = Artist, year = Year)
+ds
 ### Question 3 ----------
 
 # Use mutate to create a new variable in ds that has the decade of the year as a number
@@ -32,12 +36,14 @@ ds <- read_csv("data_raw/rolling_stone_500.csv")
 # Hint: read the documentation for ?floor
 
 #ANSWER
+ ds <- ds %>% mutate(decade = round(ds$year,floor))
 
 ### Question 4 ----------
 
 # Sort the dataset by rank so that 1 is at the top
 
 #ANSWER
+ds <- arrange(ds, rank)
 
 ### Question 5 ----------
 
@@ -46,7 +52,8 @@ ds <- read_csv("data_raw/rolling_stone_500.csv")
 
 #ANSWER
 
-
+top10 <-  ds %>% filter( rank <= 10) %>%
+               select(artist, song)
 ### Question 6 ----------
 
 # Use summarize to find the earliest, most recent, and average release year
