@@ -74,7 +74,7 @@ glimpse(ds_sum)
 
 #ANSWER
 filter(ds,ds$year== ds_sum)
-ds %>% filter(year == "earliest" | year == "most_recent" | year== "average") 
+ds %>%  filter( year == "earliest" | year == "most_recent" | year== "average") 
 #%>% arrange(artist,song)
 
 
@@ -87,8 +87,8 @@ ds %>% filter(year == "earliest" | year == "most_recent" | year== "average")
 # find the correct oldest, averag-ist, and most recent songs
 
 #ANSWER
-
-
+ds <- ds %>% mutate(ifelse(year== 1879,1979,year))
+filter(ds, song=="Brass in Pocket")
 ### Question 9 ---------
 
 # Use group_by and summarize to find the average rank and 
