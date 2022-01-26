@@ -60,8 +60,12 @@ top10 <-  ds %>% filter( rank <= 10) %>%
 # of all songs on the full list. Save it to a new tibble called "ds_sum"
 
 #ANSWER
-
-
+ds_sum <- ds %>% summarize(earliest = min(year, na.rm  = T),
+                           most_recent = max(year, na.rm = T),
+                           average = mean(year, na.rm = T, n = 4))
+ds_sum$average <- round(ds_sum$average)
+ds_sum$average <- as.integer(ds_sum$average)
+glimpse(ds_sum)
 ### Question 7 ----------
 
 # Use filter to find out the artists/song titles for the earliest, most 
@@ -69,6 +73,9 @@ top10 <-  ds %>% filter( rank <= 10) %>%
 # Use one filter command only, and sort the responses by year
 
 #ANSWER
+filter(ds,ds$year== ds_sum)
+ds %>% filter(year == "earliest" | year == "most_recent" | year== "average") 
+#%>% arrange(artist,song)
 
 
 ### Question 8 ---------- 
