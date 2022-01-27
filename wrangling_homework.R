@@ -128,7 +128,8 @@ new_list <-  ds %>% filter(year %in% ds_sum) %>% arrange(year)
 # Use the pipe %>% to string the commands together
 
 #ANSWER
-
+summary <- ds %>% filter( decade != "na") %>% group_by(decade) %>% 
+  summarize(mean_rank_decade = mean(rank), N = n())
 
 ### Question 10 --------
 
@@ -139,4 +140,21 @@ new_list <-  ds %>% filter(year %in% ds_sum) %>% arrange(year)
 
 #ANSWER
 
-  
+ # max_decade <- ds %>%  group_by(decade) %>%  count(decade) %>% 
+ #     slice_max(n,n = 1)
+# This should be a single row tibble
+#max_decade <- ds %>% filter( decade != "na") %>%  group_by(decade) %>%  count(decade) %>% 
+ # slice_max(max_decade,n, n = 1 )
+# this didn't work either, I will try wrapping the count and slice together
+
+#max_decade <- ds %>% filter( decade != "na") %>%  group_by(decade) %>% 
+#  count(decade) 
+
+#max_slice <- slice_max(max_decade$n)
+#glimpse(max_decade)
+
+# I think the issue is that I have to ungroup first. Because it is trying to 
+# find the max of each group. So I am getting 10 values instead of 1. 
+
+max_decade <- ds %>% filter( decade != "na") %>%  group_by(decade) %>% 
+  count(decade) %>% ungroup() %>%  slice_max(max_decade$n)
