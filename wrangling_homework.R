@@ -36,7 +36,9 @@ ds
 # Hint: read the documentation for ?floor
 
 #ANSWER
- ds <- ds %>% mutate(decade = round(ds$year,floor))
+ ds <-  ds %>% mutate( decade = round(year, digits = -1))
+# I cant get this to work using floor floor requires 1 input and does not allow
+# me to change the way if rounds. 
 
 ### Question 4 ----------
 
@@ -66,6 +68,8 @@ ds_sum <- ds %>% summarize(earliest = min(year, na.rm  = T),
 ds_sum$average <- round(ds_sum$average)
 ds_sum$average <- as.integer(ds_sum$average)
 glimpse(ds_sum)
+glimpse(ds)
+
 ### Question 7 ----------
 
 # Use filter to find out the artists/song titles for the earliest, most 
@@ -73,10 +77,23 @@ glimpse(ds_sum)
 # Use one filter command only, and sort the responses by year
 
 #ANSWER
-filter(ds,ds$year== ds_sum)
-ds %>%  filter( year == "earliest" | year == "most_recent" | year== "average") 
-#%>% arrange(artist,song)
+filter(ds,year== ds_sum)# this should work but doesn't
+# try one at a time first 
+filter(ds,year== ds_sum$earliest)
+filter(ds,year == ds_sum$most_recent)
+filter(ds,year == ds_sum$average)
+# this works one at a time there are 1, 3, and 11 values I should have total 15
+#filter(ds, year == (ds_sum$earliest| ds_sum$most_recent | ds_sum$average))
+#filter(ds, year == ds_sum$earliest| ds_sum$most_recent | ds_sum$average)
+#doesn't filter anything has 500 values'
+#filter(ds, year == ds_sum$earliest, year== ds_sum$most_recent , 
+#       year== ds_sum$average)
+# does not pick up any values, empty tibble
+filter(ds, year %in% ds_sum)
 
+# this finally works and has 15 values that I assume are equivalent to the step wise
+# now I need to add the arrangement 
+ds %>% filter(year %in% ds_sum) %>% arrange(year)
 
 ### Question 8 ---------- 
 
@@ -87,8 +104,21 @@ ds %>%  filter( year == "earliest" | year == "most_recent" | year== "average")
 # find the correct oldest, averag-ist, and most recent songs
 
 #ANSWER
-ds <- ds %>% mutate(ifelse(year== 1879,1979,year))
+ds <- ds %>% mutate(year = ifelse(ds$year==ds_sum$earliest,1979,year))
+
+#ds <- ds %>% mutate(ifelse(year== 1879,1979,year))
+
+# make sure it worked
 filter(ds, song=="Brass in Pocket")
+# now all the steps together
+ds_sum <- ds %>% summarize(earliest = min(year, na.rm  = T),
+                           most_recent = max(year, na.rm = T),
+                           average = mean(year, na.rm = T, n = 4))
+ds_sum$average <- round(ds_sum$average)
+ds_sum$average <- as.integer(ds_sum$average)
+
+new_list <-  ds %>% filter(year %in% ds_sum) %>% arrange(year)
+
 ### Question 9 ---------
 
 # Use group_by and summarize to find the average rank and 
