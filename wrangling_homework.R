@@ -36,10 +36,10 @@ ds
 # Hint: read the documentation for ?floor
 
 #ANSWER
- ds <-  ds %>% mutate( decade = round(year, digits = -1))
+ ds <-  ds %>% mutate( decade = floor(year, digits = -1))
 # I cant get this to work using floor floor requires 1 input and does not allow
 # me to change the way if rounds. 
-
+#ds <- ds %>%  mutate(decade = floor(year))
 ### Question 4 ----------
 
 # Sort the dataset by rank so that 1 is at the top
@@ -77,11 +77,11 @@ glimpse(ds)
 # Use one filter command only, and sort the responses by year
 
 #ANSWER
-filter(ds,year== ds_sum)# this should work but doesn't
+  #filter(ds,year== ds_sum)# this should work but doesn't
 # try one at a time first 
-filter(ds,year== ds_sum$earliest)
-filter(ds,year == ds_sum$most_recent)
-filter(ds,year == ds_sum$average)
+  #filter(ds,year== ds_sum$earliest)
+  #filter(ds,year == ds_sum$most_recent)
+  #filter(ds,year == ds_sum$average)
 # this works one at a time there are 1, 3, and 11 values I should have total 15
 #filter(ds, year == (ds_sum$earliest| ds_sum$most_recent | ds_sum$average))
 #filter(ds, year == ds_sum$earliest| ds_sum$most_recent | ds_sum$average)
@@ -89,7 +89,7 @@ filter(ds,year == ds_sum$average)
 #filter(ds, year == ds_sum$earliest, year== ds_sum$most_recent , 
 #       year== ds_sum$average)
 # does not pick up any values, empty tibble
-filter(ds, year %in% ds_sum)
+  #filter(ds, year %in% ds_sum)
 
 # this finally works and has 15 values that I assume are equivalent to the step wise
 # now I need to add the arrangement 
