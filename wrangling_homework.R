@@ -36,10 +36,8 @@ ds
 # Hint: read the documentation for ?floor
 
 #ANSWER
- ds <-  ds %>% mutate( decade = floor(year, digits = -1))
-# I cant get this to work using floor floor requires 1 input and does not allow
-# me to change the way if rounds. 
-#ds <- ds %>%  mutate(decade = floor(year))
+ ds <-  ds %>% mutate( decade = (floor(year / 10))*10)
+
 ### Question 4 ----------
 
 # Sort the dataset by rank so that 1 is at the top
@@ -157,4 +155,5 @@ summary <- ds %>% filter( decade != "na") %>% group_by(decade) %>%
 # find the max of each group. So I am getting 10 values instead of 1. 
 
 max_decade <- ds %>% filter( decade != "na") %>%  group_by(decade) %>% 
-  count(decade) %>% ungroup() %>%  slice_max(max_decade$n)
+  count(decade) %>% ungroup() %>%  slice_max(n)
+
